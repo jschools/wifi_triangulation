@@ -52,7 +52,7 @@ To improve further I introduced some filters. The obvious metric is how low the 
 
   ![Metrics](http://rpiai.files.wordpress.com/2014/08/two-metrics.png?w=300)
 
-As you can see there is a localization of "bad" points which can be cutoff with these metrics. For example, taking this data and setting the metrics to be ~XX and ~XX you can greatly improve the correct calls/room as shown here for before/after:
+As you can see there is a localization of "bad" points which can be cutoff with these metrics. For example, taking this data and setting the metrics to be ~1.2 (First/Second) and ~25% (minimum first result) you can greatly improve the correct calls/room as shown here for before/after:
 
   ![Improvmenets](http://rpiai.files.wordpress.com/2014/08/metric-improvements.png?w=500)
 
