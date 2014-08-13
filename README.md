@@ -8,15 +8,13 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 
 
 
-# Method Overview
+# Implementation
 
 Basically this relies on you walking to a designated location and waiting for 10minutes while devices collect information about the WiFi networks and strengths at that spot. Once all the locations have been "learned" then it simply calculates the Bayesian probability of location X given a WiFi signal from router Y with signal Z:
 
   ![BayesTheorem](https://rpiai.files.wordpress.com/2014/08/bayes_theorem.png)
 
 A normalized Bayesian probability posterior can then be used for evaluation of the probability that a location is entered.
-
-# Implementation
 
 I'll go over how I implemented this code using my apartment as an example
 
