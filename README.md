@@ -5,6 +5,12 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 
 ###### Please note that this setup as described is supposed to be a proof of principle. It is far from polished. What I attempt here serves as a springboard for further development. My goals here were determine 1) Does WiFi triangulation work at all? 2) What is the best application if Bayes Theorem (prior and posteriors)? 3) What sort of resolution and accuracy can be determined? I think I've answered these questions as you read. 
 
+# Requirements
+
+- Matlab with [mqsqlite](http://sourceforge.net/projects/mksqlite/) (I hope to remove this dependency)
+- Python+SQLite (I hope to remove this dependency)
+- Android SDK
+- [Tasker for Android](http://tasker.dinglisch.net/) (I hope to remove this dependency)
 
 
 
