@@ -26,7 +26,11 @@ I'll go over how I implemented this code using my apartment as an example
 
 ## Learning locations
 
-My apartment is almost exactly 1,000 sq ft. I divided my apartment into 8 frequented locations (shown by yellow circles). The first task is to aquire several hundred scans of all the WiFi networks and save them to a database. I have a roundabout way of doing this, hopefully to be improved in the future.  
+My apartment is almost exactly 1,000 sq ft. I divided my apartment into 8 frequented locations (shown by yellow circles):
+
+  ![Layout](https://rpiai.files.wordpress.com/2014/08/apartment_layout_wifi-01.png?w=243)
+  
+The first task is to aquire several hundred scans of all the WiFi networks and save them to a database. I have a roundabout way of doing this, hopefully to be improved in the future.  
 
 I've used an SQLite database on the Raspberry Pi to store all the variables ```db/data.db```. The database was created using Python scripts ```dbsetup.py``` written by Travis. Records are inserted one at a time using a PHP script, ```update.php```. This PHP script has three inputs: MAC address, signal strength, location number (0 if not known) which are presented comma-delimited into the loc variable (i.e. ```http://blahblahblah/update.php?loc=3d:ma:c3:ad:d3,-54,1```.
 
@@ -46,7 +50,12 @@ After acquiring the data one can run a simulation using random sets of the aquir
 
 To improve further I introduced some filters. The obvious metric is how low the maximum Bayesian probability can be, and another could be the ratio between the maximum Bayesian probability and the next highest. The plot of these two metrics is shown here:
 
+  ![Metrics](http://rpiai.files.wordpress.com/2014/08/two-metrics.png?w=300)
+
 As you can see there is a localization of "bad" points which can be cutoff with these metrics. For example, taking this data and setting the metrics to be ~XX and ~XX you can greatly improve the correct calls/room as shown here for before/after:
+
+  ![Improvmenets](http://rpiai.files.wordpress.com/2014/08/metric-improvements.png?w=500)
+
 
 ## Future development
 
