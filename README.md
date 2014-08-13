@@ -30,7 +30,10 @@ The WiFi information is gathered from my Android device - a Droid DNA phone. I w
 
 These distributions depend on how the WiFi strength signals. After looking at a bunch of these I've noticed that there not quite uniform and not quite normal. Some are, but some are bimodal or otherwise complicated. Here is a typical:
 
-For a catch all solution I opted to use a multivariate normal with six degrees of freedom (pair of means, variances weights). This allows for pretty precise control and only requires six mumbers
+For a catch all solution I opted to use a multivariate normal with six degrees of freedom (pair of means, pair variances pair weights). This allows for pretty precise control and only requires six mumbers for each MAC address and each room. I used Matlab to calculate these multivariate distributions (see ```analyze_twogaussian.m```). To calculate the multivarites I used an Expectation Maximization code provided by (Matthew Roughan)[http://www.mathworks.com/matlabcentral/fileexchange/24867-gaussian-mixture-model-m]. Note that these distributions have to determined for each MAC address for all X locations, and also each MAC address for all (not X) locations (see Bayesian probability above). So in total this requires X Locations * Y WiFi addresses * 2 Multivariates * 6 variables / multivariate numbers.
+
+The tricky part comes when there is no data for some WiFi networks and some locations. If no data is detected, I've devised that the distribution will revert to a single Normal (or Multivariate where the weight of one is ~0) with the lowest possible Signal (-90) and a huge standard deviation - so essentially the null value becomes a background noise distribution.
+
 
 ## Code
 
