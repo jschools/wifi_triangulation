@@ -1,0 +1,131 @@
+<TaskerData sr="" dvi="1" tv="4.4u2m">
+	<Task sr="task92">
+		<cdate>1407876516223</cdate>
+		<edate>1407983714649</edate>
+		<id>92</id>
+		<nme>LogWifi</nme>
+		<pri>10</pri>
+		<Action sr="act0" ve="6">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%countc</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act1" ve="6">
+			<code>888</code>
+			<label>LOOPALL</label>
+			<Str sr="arg0" ve="3">%countc</Str>
+			<Int sr="arg1" val="1"/>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act10" ve="6">
+			<code>118</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">http://zzz:dogfisheskimo@zns.duckdns.org/where3/update.php?loc=%BOTHDATA</Str>
+			<Str sr="arg1" ve="3"/>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Int sr="arg5" val="10"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Int sr="arg8" val="0"/>
+		</Action>
+		<Action sr="act11" ve="6">
+			<code>888</code>
+			<Str sr="arg0" ve="3">%counta</Str>
+			<Int sr="arg1" val="2"/>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act12" ve="6">
+			<code>888</code>
+			<Str sr="arg0" ve="3">%countb</Str>
+			<Int sr="arg1" val="2"/>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act13" ve="6">
+			<code>135</code>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">LOOPDATA</Str>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%counta</lhs>
+					<op>6</op>
+					<rhs>%datalast</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act14" ve="6">
+			<code>135</code>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">LOOPALL</Str>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%countc</lhs>
+					<op>6</op>
+					<rhs>200</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act2" ve="6">
+			<code>20</code>
+			<App sr="arg0">
+				<appClass>com.example.myfirstapp.MainActivity</appClass>
+				<appPkg>com.example.myfirstapp</appPkg>
+				<label>My First App</label>
+			</App>
+			<Str sr="arg1" ve="3"/>
+			<Int sr="arg2" val="1"/>
+		</Action>
+		<Action sr="act3" ve="6">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%ROOM</Str>
+			<Str sr="arg1" ve="3">2</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act4" ve="6">
+			<code>417</code>
+			<Str sr="arg0" ve="3">log.file</Str>
+			<Str sr="arg1" ve="3">%data</Str>
+		</Action>
+		<Action sr="act5" ve="6">
+			<code>590</code>
+			<Str sr="arg0" ve="3">%data</Str>
+			<Str sr="arg1" ve="3">|</Str>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act6" ve="6">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%datalast</Str>
+			<Str sr="arg1" ve="3">%data(#)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act7" ve="6">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%counta</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act8" ve="6">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%countb</Str>
+			<Str sr="arg1" ve="3">2</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act9" ve="6">
+			<code>547</code>
+			<label>LOOPDATA</label>
+			<Str sr="arg0" ve="3">%BOTHDATA</Str>
+			<Str sr="arg1" ve="3">%data(%counta),%data(%countb),%ROOM</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+	</Task>
+</TaskerData>
