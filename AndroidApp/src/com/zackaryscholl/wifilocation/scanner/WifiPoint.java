@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.zackaryscholl.wifilocation.scanner;
 
 import android.net.wifi.ScanResult;
 import android.os.Parcel;

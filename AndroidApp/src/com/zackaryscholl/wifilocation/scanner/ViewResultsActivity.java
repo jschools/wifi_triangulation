@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.zackaryscholl.wifilocation.scanner;
 
 import java.util.List;
 

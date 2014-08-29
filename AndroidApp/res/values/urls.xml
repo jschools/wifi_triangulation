@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- This is the upload url. Change it to whatever you need. -->
     <string name="url_upload">http://morning-wave-7971.herokuapp.com/</string>
 
 </resources>

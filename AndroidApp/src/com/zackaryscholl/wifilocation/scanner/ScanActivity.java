@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.zackaryscholl.wifilocation.scanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener, OnItemSelectedListener {
+public class ScanActivity extends Activity implements OnClickListener, OnItemSelectedListener {
 
 	private static final String KEY_POINTS = "points";
 	private static final String KEY_LOCATION = "location";
@@ -51,7 +51,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 				break;
 			case UploadService.ACTION_UPLOAD_COMPLETE:
 				int count = intent.getIntExtra(UploadService.EXTRA_NUM_POINTS, -1);
-				Toast.makeText(MainActivity.this, "Server processed " + count + " points", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ScanActivity.this, "Server processed " + count + " points", Toast.LENGTH_SHORT).show();
 				mUploading = false;
 				updateUiState();
 				break;
@@ -275,7 +275,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 			boolean started = mgr.startScan();
 
 			if (!started) {
-				Toast.makeText(MainActivity.this, "WiFi scan failed to start", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ScanActivity.this, "WiFi scan failed to start", Toast.LENGTH_SHORT).show();
 				stopScanning();
 			}
 			else {

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--
+    Modify this list to name the different scan locations.
+    They will be numbered 0..N-1 in the order given here.
+    -->
     <string-array name="location_names">
         <item>Room 0</item>
         <item>Room 1</item>
