@@ -1,43 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
+    android:layout_height="match_parent" >
 
-    <Spinner
-        android:id="@+id/spinner_location"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/location_names"
-        android:minHeight="54dp" />
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start" />
+        <Spinner
+            android:id="@+id/spinner_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/location_names"
+            android:minHeight="54dp"
+            tools:listitem="@android:layout/simple_spinner_item" />
 
-    <Button
-        android:id="@+id/btn_stop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop" />
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start" />
 
-    <TextView
-        android:id="@+id/collected_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:minHeight="48dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:text="0 data points collected" />
+        <Button
+            android:id="@+id/btn_stop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop" />
 
-    <Button
-        android:id="@+id/btn_upload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Upload" />
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/collected_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="0 data points collected" />
+
+        <Button
+            android:id="@+id/btn_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View" />
+
+        <Button
+            android:id="@+id/btn_upload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload" />
+
+        <TextView
+            android:id="@+id/uploaded_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="Uploading 0 data points..." />
+    </LinearLayout>
+
+</ScrollView>

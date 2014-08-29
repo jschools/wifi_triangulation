@@ -24,11 +24,21 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener, OnItemSelectedListener {
 
+	private static final String KEY_POINTS = "points";
+	private static final String KEY_LOCATION = "location";
+
+	private static final int SOFT_UPLOAD_LIMIT_KB = 2 * 1024; // cap out around 2MB
+	private static final int APPROX_MEASUREMENT_SIZE_B = 90;
+	private static final int SOFT_COUNT_LIMIT = (SOFT_UPLOAD_LIMIT_KB * 1024) / APPROX_MEASUREMENT_SIZE_B;
+
 	private boolean mScanning;
+	private boolean mUploading;
+
+	private int mLocation;
+
 	private Handler mHandler;
-	private List<WifiPoint> mPoints;
-	private int mRoom;
-	private int mDisplayedCount;
+	private ArrayList<WifiPoint> mPoints;
+	private final CountAnimator mCountAnimator = new CountAnimator();
 
 	private static final IntentFilter WIFI_FILTER = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 	private static final IntentFilter UPLOAD_FILTER = new IntentFilter(UploadService.ACTION_UPLOAD_COMPLETE);
@@ -41,13 +51,21 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 				break;
 			case UploadService.ACTION_UPLOAD_COMPLETE:
 				int count = intent.getIntExtra(UploadService.EXTRA_NUM_POINTS, -1);
-				Toast.makeText(MainActivity.this, "Complete: " + count, Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "Server processed " + count + " points", Toast.LENGTH_SHORT).show();
+				mUploading = false;
+				updateUiState();
 				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putParcelableArrayList(KEY_POINTS, mPoints);
+		outState.putInt(KEY_LOCATION, mLocation);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +77,30 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		setProgressBarIndeterminate(true);
 		setProgressBarIndeterminateVisibility(false);
 
-		mHandler = new Handler();
-		mPoints = new ArrayList<WifiPoint>();
-		mDisplayedCount = 0;
+		if (savedInstanceState != null) {
+			mPoints = savedInstanceState.getParcelableArrayList(KEY_POINTS);
+			mLocation = savedInstanceState.getInt(KEY_LOCATION, 0);
+		}
 
-		Spinner roomSpinner = (Spinner) findViewById(R.id.spinner_location);
-		roomSpinner.setOnItemSelectedListener(this);
-		mRoom = roomSpinner.getSelectedItemPosition();
+		if (mPoints == null) {
+			mPoints = new ArrayList<WifiPoint>();
+		}
+		mCountAnimator.setDisplayedCount(mPoints.size());
+
+		mHandler = new Handler();
+
+		Spinner locationSpinner = (Spinner) findViewById(R.id.spinner_location);
+		locationSpinner.setSelection(Math.min(mLocation, locationSpinner.getCount()));
+		locationSpinner.setOnItemSelectedListener(this);
 
 		findViewById(R.id.btn_start).setOnClickListener(this);
 		findViewById(R.id.btn_stop).setOnClickListener(this);
 		findViewById(R.id.btn_upload).setOnClickListener(this);
+		findViewById(R.id.btn_clear).setOnClickListener(this);
+		findViewById(R.id.btn_view).setOnClickListener(this);
+
+		mScanning = false;
+		mUploading = false;
 	}
 
 	@Override
@@ -105,6 +136,12 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		case R.id.btn_upload:
 			uploadResults();
 			break;
+		case R.id.btn_clear:
+			clearResults();
+			break;
+		case R.id.btn_view:
+			viewResults();
+			break;
 		default:
 			break;
 		}
@@ -112,7 +149,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		mRoom = position;
+		mLocation = position;
 	}
 
 	@Override
@@ -134,22 +171,43 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		updateUiState();
 	}
 
+	private void clearResults() {
+		stopScanning();
+		mPoints.clear();
+
+		updateUiState();
+	}
+
 	private void uploadResults() {
 		stopScanning();
 
 		UploadService.startUpload(new ArrayList<>(mPoints));
+		mUploading = true;
+		TextView uploadedCountView = (TextView) findViewById(R.id.uploaded_count);
+		String message = "Uploading " + mPoints.size() + " data points...";
+		uploadedCountView.setText(message);
 
-		mDisplayedCount = 0;
-		mPoints.clear();
-		updateProgress(0);
+		clearResults();
+
+		updateUiState();
+	}
+
+	private void viewResults() {
+		Intent intent = new Intent(this, ViewResultsActivity.class);
+		intent.putExtra(ViewResultsActivity.EXTA_POINTS, mPoints);
+		startActivity(intent);
 	}
 
 	private void updateUiState() {
-		setProgressBarIndeterminateVisibility(mScanning);
+		setProgressBarIndeterminateVisibility(mScanning || mUploading);
 		findViewById(R.id.spinner_location).setEnabled(!mScanning);
-		findViewById(R.id.btn_start).setEnabled(!mScanning);
+		findViewById(R.id.btn_start).setEnabled(!mScanning && !mUploading);
 		findViewById(R.id.btn_stop).setEnabled(mScanning);
-		findViewById(R.id.btn_upload).setEnabled(!mScanning);
+		findViewById(R.id.btn_upload).setEnabled(!mScanning && !mUploading && !mPoints.isEmpty());
+		findViewById(R.id.btn_clear).setEnabled(!mScanning && !mUploading && !mPoints.isEmpty());
+		findViewById(R.id.uploaded_count).setVisibility(mUploading ? View.VISIBLE : View.GONE);
+		findViewById(R.id.btn_view).setEnabled(!mScanning && !mUploading && !mPoints.isEmpty());
+		startAnimatedProgressUpdate();
 	}
 
 	private void appendScanResults() {
@@ -162,18 +220,29 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 
 		long time = System.currentTimeMillis() / 1000;
 		for (ScanResult scanResult : results) {
-			mPoints.add(new WifiPoint(scanResult, mRoom, time));
+			mPoints.add(new WifiPoint(scanResult, mLocation, time));
 		}
 
-		mHandler.post(mChangeCounterRunnable);
+		if (mPoints.size() > SOFT_COUNT_LIMIT) {
+			Toast.makeText(this, "Upload size of " + SOFT_UPLOAD_LIMIT_KB + "kB reached", Toast.LENGTH_SHORT).show();
+			stopScanning();
+		}
+
+		startAnimatedProgressUpdate();
 	}
 
-	private void updateProgress(int dataPointCount) {
-		String text = getString(R.string.fmt_data_points_collected, Integer.valueOf(dataPointCount));
-		((TextView) findViewById(R.id.collected_count)).setText(text);
+	private void startAnimatedProgressUpdate() {
+		mCountAnimator.run();
 	}
 
-	private final Runnable mChangeCounterRunnable = new Runnable() {
+	private class CountAnimator implements Runnable {
+		private int mDisplayedCount = 0;
+
+		public void setDisplayedCount(int displayedCount) {
+			mDisplayedCount = displayedCount;
+			updateProgress(mDisplayedCount);
+		}
+
 		@Override
 		public void run() {
 			mHandler.removeCallbacks(this);
@@ -185,12 +254,17 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 					mDisplayedCount++;
 				}
 				else {
-					mDisplayedCount--;
+					mDisplayedCount = Math.max(mPointCount, mDisplayedCount / 2);
 				}
 				mHandler.postDelayed(this, 30);
 			}
 		}
-	};
+
+		private void updateProgress(int dataPointCount) {
+			String text = getString(R.string.fmt_data_points_collected, Integer.valueOf(dataPointCount));
+			((TextView) findViewById(R.id.collected_count)).setText(text);
+		}
+	}
 
 	private final Runnable mScanRunnable = new Runnable() {
 		@Override

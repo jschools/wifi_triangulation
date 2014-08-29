@@ -15,15 +15,15 @@ public class WifiPoint implements Parcelable {
 	public final int rssi;
 
 	@SerializedName("room")
-	public final int room;
+	public final int location;
 
 	@SerializedName("time")
 	public final long timestamp;
 
-	public WifiPoint(ScanResult scanResult, int room, long time) {
+	public WifiPoint(ScanResult scanResult, int location, long time) {
 		macAddress = scanResult.BSSID;
 		rssi = scanResult.level;
-		this.room = room;
+		this.location = location;
 		timestamp = time;
 	}
 
@@ -36,14 +36,14 @@ public class WifiPoint implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(macAddress);
 		dest.writeInt(rssi);
-		dest.writeInt(room);
+		dest.writeInt(location);
 		dest.writeLong(timestamp);
 	}
 
 	private WifiPoint(Parcel in) {
 		macAddress = in.readString();
 		rssi = in.readInt();
-		room = in.readInt();
+		location = in.readInt();
 		timestamp = in.readLong();
 	}
 

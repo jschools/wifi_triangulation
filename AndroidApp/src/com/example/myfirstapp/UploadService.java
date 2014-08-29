@@ -24,8 +24,6 @@ public class UploadService extends IntentService {
 	public static final String ACTION_UPLOAD_COMPLETE = "UploadService.ACTION_UPLOAD_COMPLETE";
 	public static final String EXTRA_NUM_POINTS = "numPoints";
 
-	private static final String URL = "http://morning-wave-7971.herokuapp.com/";
-
 	public static void startUpload(List<WifiPoint> points) {
 		Context context = WifiScanApplication.getInstance();
 
@@ -59,14 +57,15 @@ public class UploadService extends IntentService {
 		}
 	}
 
-	private static void handleUpload(Intent intent) {
+	private void handleUpload(Intent intent) {
+		final String url = getString(R.string.url_upload);
 		final List<WifiPoint> points = intent.getParcelableArrayListExtra(EXTRA_POINTS);
 		final String json = new Gson().toJson(points);
 
 		RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
 
 		Request.Builder builder = new Request.Builder();
-		builder.url(URL).post(body);
+		builder.url(url).post(body);
 		Request request = builder.build();
 
 		OkHttpClient client = new OkHttpClient();
