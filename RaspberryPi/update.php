@@ -64,12 +64,14 @@ $request_body = file_get_contents('php://input');
 $data_points = json_decode($request_body, true);
 
 // loop over the elements of the array, inserting each one into the db
+$num_points = 0;
 foreach ($data_points as $data_point) {
 	insert_data_point($data_point);
+	$num_points++;
 }
 
-// respond with 204 No Content if everything goes well
-http_response_code(204);
+// respond with the number of points we inserted
+echo $num_points;
 
 // TODO: add gzip compression support
 // TODO: send http_response_code(400) for bad requests
