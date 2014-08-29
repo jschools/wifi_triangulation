@@ -12,6 +12,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -29,11 +30,22 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	private int mRoom;
 	private int mDisplayedCount;
 
-	private static final IntentFilter FILTER = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+	private static final IntentFilter WIFI_FILTER = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+	private static final IntentFilter UPLOAD_FILTER = new IntentFilter(UploadService.ACTION_UPLOAD_COMPLETE);
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			appendScanResults();
+			switch (intent.getAction()) {
+			case WifiManager.SCAN_RESULTS_AVAILABLE_ACTION:
+				appendScanResults();
+				break;
+			case UploadService.ACTION_UPLOAD_COMPLETE:
+				int count = intent.getIntExtra(UploadService.EXTRA_NUM_POINTS, -1);
+				Toast.makeText(MainActivity.this, "Complete: " + count, Toast.LENGTH_SHORT).show();
+				break;
+			default:
+				break;
+			}
 		}
 	};
 
@@ -66,7 +78,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 
 		updateUiState();
 
-		registerReceiver(mReceiver, FILTER);
+		registerReceiver(mReceiver, WIFI_FILTER);
+		LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReceiver, UPLOAD_FILTER);
 	}
 
 	@Override
@@ -77,6 +90,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		mHandler.removeCallbacksAndMessages(null);
 
 		unregisterReceiver(mReceiver);
+		LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mReceiver);
 	}
 
 	@Override
@@ -123,11 +137,11 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	private void uploadResults() {
 		stopScanning();
 
+		UploadService.startUpload(new ArrayList<>(mPoints));
+
 		mDisplayedCount = 0;
 		mPoints.clear();
 		updateProgress(0);
-
-		Toast.makeText(this, "TODO: Upload " + mPoints.size() + " points", Toast.LENGTH_SHORT).show();
 	}
 
 	private void updateUiState() {
@@ -146,7 +160,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		WifiManager mgr = (WifiManager) getSystemService(WIFI_SERVICE);
 		List<ScanResult> results = mgr.getScanResults();
 
-		long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis() / 1000;
 		for (ScanResult scanResult : results) {
 			mPoints.add(new WifiPoint(scanResult, mRoom, time));
 		}
