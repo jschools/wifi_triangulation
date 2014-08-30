@@ -7,10 +7,10 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 
 # Requirements
 
-- Matlab with [mqsqlite](http://sourceforge.net/projects/mksqlite/) (I hope to remove this dependency)
-- Python+SQLite (I hope to remove this dependency)
+- ~~Matlab with [mqsqlite](http://sourceforge.net/projects/mksqlite/)~~ (08/30/14: Python does all this now!)
+- Python+SQLite (I hope to remove this dependency eventually)
 - Android SDK
-- [Tasker for Android](http://tasker.dinglisch.net/) (I hope to remove this dependency)
+- ~~[Tasker for Android](http://tasker.dinglisch.net/)~~ (08/30/14: Android App can do this now!)
 
 
 
@@ -71,8 +71,8 @@ As you can see there is a localization of "bad" points which can be cutoff with 
 
 Lots and lots to do! This was my first Android app every, which is why it sucks, and I've only spent ~9 hours on this project. Please contribute ideas/code or fork it and continue yourself!
 
-- ~~Use Python instead of Matlab to determine the fixed Posterior distributions and off load almost everything to the Raspberry Pi~~ *Made possible using simpler (and just as effective) prior calculation scheme
-- ~~Make the Android app more friendly and not reliant on Tasker~~ *Thank you jschools*
+- ~~Use Python instead of Matlab to determine the fixed Posterior distributions and off load almost everything to the Raspberry Pi~~ *Made possible using simpler (and just as effective) prior calculation scheme*
+- ~~Make the Android app more friendly and not reliant on Tasker~~ **Thank you [jschools](https://github.com/jschools)**
 - Allow Android to collect data in the background
 - Eventually make entire process self contained in an Android app
 
