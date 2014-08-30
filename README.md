@@ -16,11 +16,25 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 
 # Implementation
 
-Basically this relies on you walking to a designated location and waiting for 10minutes while devices collect information about the WiFi networks and strengths at that spot. Once all the locations have been "learned" then it simply calculates the Bayesian probability of location X given a WiFi signal from router Y with signal Z:
+Basically this relies on you walking to a designated location and waiting for 10minutes while devices collect information about the WiFi networks and strengths at that spot. Once all the locations have been "learned" then it simply calculates the Bayesian probability of location X given a WiFi signal from router Y with signal Z. It does this using Bayes' theorem:
 
-  ![BayesTheorem](https://rpiai.files.wordpress.com/2014/08/bayes_theorem.png)
+  ![BayesTheorem](https://upload.wikimedia.org/math/d/9/2/d92e290c66d423e4798a22a3690cbd31.png)
+  
+In this case, since there are Y routers and X locations, we use version of Bayes' theorem with multiple observations:
 
-A normalized Bayesian probability posterior can then be used for evaluation of the probability that a location is entered.
+  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10.png?w=300)
+<!--http://frog.isima.fr/bruno/share/tex2png/
+P(\text{Loc}_X | \text{WiFi}_Y = Z_Y) = \frac{ P( \text{Loc}_X  ) \prod_Y P(\text{WiFi}_Y = Z_Y |\text{Loc}_X )}{P(\text{WiFi}_1 = Z_1,\ldots,\text{WiFi}_Y = Z_Y)}
+-->
+
+which can be simplifed (for computational reasons) using the Log-likelihood:
+
+  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10-1.png?w=300)
+
+<!--
+\log\left(P(\text{Loc}_X | \text{WiFi}_Y = Z_Y)\right) = \log\left( P( \text{Loc}_X  ) \right) + \sum_Y \log \left( P(\text{WiFi}_Y = Z_Y |\text{Loc}_X ) \right) -  \sum_Y \log\left( P(\text{WiFi}_Y = Z_Y) \right)
+-->
+
 
 I'll go over how I implemented this code using my apartment as an example
 
