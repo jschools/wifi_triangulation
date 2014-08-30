@@ -13,8 +13,24 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 - ~~[Tasker for Android](http://tasker.dinglisch.net/)~~ (08/30/14: Android App can do this now!)
 
 
+# Future development
 
-# Implementation
+Lots and lots to do! This was my first Android app every, which is why it sucks, and I've only spent ~9 hours on this project. Please contribute ideas/code or fork it and continue yourself!
+
+- ~~Use Python instead of Matlab to determine the fixed Posterior distributions and off load almost everything to the Raspberry Pi~~ *Made possible using simpler (and just as effective) prior calculation scheme*
+- ~~Make the Android app more friendly and not reliant on Tasker~~ **Thank you [jschools](https://github.com/jschools)**
+- Allow Android to collect data in the background
+- Ability to change URL in AndroidApp
+- Eventually make entire process self contained in an Android app
+
+# Acknowledgements
+
+Travis provided all the database code for Python and helped me get all of that started. [jschools](https://github.com/jschools) got the android app and php uploading working!
+
+
+# Background Information 
+
+## Implementation
 
 Basically this relies on you walking to a designated location and waiting for 10minutes while devices collect information about the WiFi networks and strengths at that spot. Once all the locations have been "learned" then it simply calculates the Bayesian probability of location X given a WiFi signal from router Y with signal Z. It does this using Bayes' theorem:
 
@@ -66,16 +82,16 @@ As you can see there is a localization of "bad" points which can be cutoff with 
 
   ![Improvmenets](http://rpiai.files.wordpress.com/2014/08/metric-improvements.png?w=500)
 
+# Step-by-step guide to implementation
 
-## Future development
+**In progress**
 
-Lots and lots to do! This was my first Android app every, which is why it sucks, and I've only spent ~9 hours on this project. Please contribute ideas/code or fork it and continue yourself!
+0. This project really works well with a Raspbery Pi. Get one and install python and sqlite3. I believe its fine if you use the local network, but make sure to forward Port 9003 so the websockets will work. Put the ```RaspberryPi``` files in your public html folder, ```/var/www/```.
 
-- ~~Use Python instead of Matlab to determine the fixed Posterior distributions and off load almost everything to the Raspberry Pi~~ *Made possible using simpler (and just as effective) prior calculation scheme*
-- ~~Make the Android app more friendly and not reliant on Tasker~~ **Thank you [jschools](https://github.com/jschools)**
-- Allow Android to collect data in the background
-- Eventually make entire process self contained in an Android app
+1. First run ```dbsetup.py``` to set up the table.
+ 
+2. Use the Android app now, pointing the app towards your URL of ```update.php```. Walk around to each room and collect some data points and upload them to the server. Be sure to register which room your in! This step is worth repeating every once and awhile.
 
-# Acknowledgements
+3. Once you have data, run ```calculatePriors.py``` which will save a Pickle of the parameters for all the mac addresses and locations in your database. This takes a few minutes so thats why its a separate file.
 
-Travis provided all the database code for Python and helped me get all of that started.
+4. To start up the server now, first make sure your IP addresses in ```index.html``` and ```server_com.py``` are correct. Then run ```nohup python server.py &``` to start the main listener and then ```nohup python server_com.py &``` to start the calculation of Bayesian probabilities. It will calculate about once per second. The calculations will automatically update on ```index.html```.
