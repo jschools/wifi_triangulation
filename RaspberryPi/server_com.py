@@ -100,15 +100,15 @@ while 1:
 		P_B_notA = 0
 		P_B_A = math.log(P_A)
 		for mac in macs:
-			pInd = int(W[mac]+100)
 			if (W[mac]<0):
+				pInd = int(W[mac]+100)
 				pFoo = P[mac][loc][pInd]
 				if (pFoo > 0):
 					P_B_A = P_B_A + math.log(pFoo)
-				pFoo = nP[mac][loc][pInd]
-				if (pFoo > 0):
-					P_B_notA = P_B_notA + math.log(pFoo) 
-		P_bayes[loc] =   (P_B_notA) - (P_B_A)
+					pFoo = nP[mac][loc][pInd]
+					if (pFoo > 0):
+						P_B_notA = P_B_notA + math.log(pFoo) 
+		P_bayes[loc] =    (P_B_A)-(P_B_notA)
 
 		
 	print "<i><small>Calculated Bayes (%2.1f seconds)</small></i><br>" % (time() - start_time)
