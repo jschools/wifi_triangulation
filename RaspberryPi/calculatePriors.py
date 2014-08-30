@@ -33,19 +33,23 @@ for mac in macs:
 		for row in c.execute("select rssi from (select rssi from locations where mac like '" + mac + "' and room=" + str(room) + ")"):
 			try:
 				P[mac][room][row[0]+100]=P[mac][room][row[0]+100]+0.4
-				P[mac][room][row[0]+99]=P[mac][room][row[0]+99]+0.24
-				P[mac][room][row[0]+101]=P[mac][room][row[0]+101]+0.24
+				P[mac][room][row[0]+99]=P[mac][room][row[0]+99]+0.14
+				P[mac][room][row[0]+101]=P[mac][room][row[0]+101]+0.14
 				P[mac][room][row[0]+98]=P[mac][room][row[0]+98]+0.06
 				P[mac][room][row[0]+102]=P[mac][room][row[0]+102]+0.06
+				P[mac][room][row[0]+97]=P[mac][room][row[0]+97]+0.06
+				P[mac][room][row[0]+103]=P[mac][room][row[0]+103]+0.06
 			except Exception,e:
 				print str(e)
 		for row in c.execute("select rssi from locations where mac like '" + mac + "' and room>0"):
 			try:
 				nP[mac][room][row[0]+100]=nP[mac][room][row[0]+100]+0.4
-				nP[mac][room][row[0]+99]=nP[mac][room][row[0]+99]+0.24
-				nP[mac][room][row[0]+101]=nP[mac][room][row[0]+101]+0.24
+				nP[mac][room][row[0]+99]=nP[mac][room][row[0]+99]+0.14
+				nP[mac][room][row[0]+101]=nP[mac][room][row[0]+101]+0.14
 				nP[mac][room][row[0]+98]=nP[mac][room][row[0]+98]+0.06
 				nP[mac][room][row[0]+102]=nP[mac][room][row[0]+102]+0.06
+				nP[mac][room][row[0]+97]=nP[mac][room][row[0]+97]+0.06
+				nP[mac][room][row[0]+103]=nP[mac][room][row[0]+103]+0.06
 			except Exception,e:
 				print str(e)
 
