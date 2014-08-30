@@ -22,14 +22,14 @@ Basically this relies on you walking to a designated location and waiting for 10
   
 In this case, since there are Y routers and X locations, we use version of Bayes' theorem with multiple observations:
 
-  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10.png?w=500)
+  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10.png?w=600)
 <!--http://frog.isima.fr/bruno/share/tex2png/
 P(\text{Loc}_X | \text{WiFi}_Y = Z_Y) = \frac{ P( \text{Loc}_X  ) \prod_Y P(\text{WiFi}_Y = Z_Y |\text{Loc}_X )}{P(\text{WiFi}_1 = Z_1,\ldots,\text{WiFi}_Y = Z_Y)}
 -->
 
 which can be simplifed (for computational reasons) using the Log-likelihood:
 
-  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10-1.png?w=500)
+  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10-1.png?w=900)
 
 <!--
 \log\left(P(\text{Loc}_X | \text{WiFi}_Y = Z_Y)\right) = \log\left( P( \text{Loc}_X  ) \right) + \sum_Y \log \left( P(\text{WiFi}_Y = Z_Y |\text{Loc}_X ) \right) -  \sum_Y \log\left( P(\text{WiFi}_Y = Z_Y) \right)
@@ -52,11 +52,7 @@ The WiFi information is gathered from my Android device - a Droid DNA phone. I w
 
 ### Determining Bayesian probabilities
 
-These distributions depend on how the WiFi strength signals. After looking at a bunch of these I've noticed that there not quite uniform and not quite normal. Some are, but some are bimodal or otherwise complicated. Here is a typical:
-
-For a catch all solution I opted to use a multivariate normal with six degrees of freedom (pair of means, pair variances pair weights). This allows for pretty precise control and only requires six mumbers for each MAC address and each room. I used Matlab to calculate these multivariate distributions (see ```analyze_twogaussian.m```). To calculate the multivarites I used an Expectation Maximization code provided by [Matthew Roughan](http://www.mathworks.com/matlabcentral/fileexchange/24867-gaussian-mixture-model-m). Note that these distributions have to determined for each MAC address for all X locations, and also each MAC address for all (not X) locations (see Bayesian probability above). So in total this requires X Locations * Y WiFi addresses * 2 Multivariates * 6 variables / multivariate numbers.
-
-The tricky part comes when there is no data for some WiFi networks and some locations. If no data is detected, I've devised that the distribution will revert to a single Normal (or Multivariate where the weight of one is ~0) with the lowest possible Signal (-90) and a huge standard deviation - so essentially the null value becomes a background noise distribution.
+These distributions depend on the WiFi strength signals. I initialliy tried using Gaussian mixture models, but found a much simpler and effective way is to just estimate the probabilities by the number of events at a given RSSI divided by the total number of events. This costs more overhead, but its not much more and its insignificant as long as your not polling thousands of locations.
 
 ### Simulations
 
@@ -73,9 +69,11 @@ As you can see there is a localization of "bad" points which can be cutoff with 
 
 ## Future development
 
-- Lots and lots to do! This was my first Android app every, which is why it sucks, and I've only spent ~9 hours on this project. Please contribute ideas/code or fork it and continue yourself!
-- Use Python instead of Matlab to determine the fixed Posterior distributions and off load almost everything to the Raspberry Pi
-- Make the Android app more friendly and not reliant on Tasker
+Lots and lots to do! This was my first Android app every, which is why it sucks, and I've only spent ~9 hours on this project. Please contribute ideas/code or fork it and continue yourself!
+
+- ~~Use Python instead of Matlab to determine the fixed Posterior distributions and off load almost everything to the Raspberry Pi~~ *Made possible using simpler (and just as effective) prior calculation scheme
+- ~~Make the Android app more friendly and not reliant on Tasker~~ *Thank you jschools*
+- Allow Android to collect data in the background
 - Eventually make entire process self contained in an Android app
 
 # Acknowledgements
