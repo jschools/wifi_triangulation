@@ -72,7 +72,7 @@ These distributions depend on the WiFi strength signals. I initialliy tried usin
 
 ### Simulations
 
-After acquiring the data one can run a simulation using random sets of the aquired data, or new sets of data. I included simulation code in ```analyze_twogaussian.m``` for use for benchmarking. This code essential picks a room and then picks random signals from that room and tests how often it is correct. In general, this method is accurate 75-90% of the time.  However this can be supplemented to further improve a little bit.
+Here are some simulations from real data. This code essential picks a room and then picks random signals from that room and tests how often it is correct. In general, this method is accurate 75-90% of the time.  However this can be supplemented to further improve a little bit.
 
 To improve further I introduced some metrics for minimum passing calls. The obvious metric is how low the maximum Bayesian probability can be, and another could be the ratio between the maximum Bayesian probability and the next highest. The plot of these two metrics is shown here:
 
