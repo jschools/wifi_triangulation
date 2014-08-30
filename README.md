@@ -22,6 +22,10 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 - Eventually make entire process self contained in an Android app (Sqlite database, building priors, and posterior calculation)
 - Markov model for better location matching
 
+# Short term to-do
+
+- Get rid of redundant data (priors of mac addresses)
+
 # Acknowledgements
 
 Travis provided all the database code for Python and helped me get all of that started. [jschools](https://github.com/jschools) got the android app and php uploading working!
