@@ -22,14 +22,14 @@ Basically this relies on you walking to a designated location and waiting for 10
   
 In this case, since there are Y routers and X locations, we use version of Bayes' theorem with multiple observations:
 
-  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10.png?w=300)
+  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10.png?w=500)
 <!--http://frog.isima.fr/bruno/share/tex2png/
 P(\text{Loc}_X | \text{WiFi}_Y = Z_Y) = \frac{ P( \text{Loc}_X  ) \prod_Y P(\text{WiFi}_Y = Z_Y |\text{Loc}_X )}{P(\text{WiFi}_1 = Z_1,\ldots,\text{WiFi}_Y = Z_Y)}
 -->
 
 which can be simplifed (for computational reasons) using the Log-likelihood:
 
-  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10-1.png?w=300)
+  ![BayesTheorem2](https://rpiai.files.wordpress.com/2014/08/tex2png-10-1.png?w=500)
 
 <!--
 \log\left(P(\text{Loc}_X | \text{WiFi}_Y = Z_Y)\right) = \log\left( P( \text{Loc}_X  ) \right) + \sum_Y \log \left( P(\text{WiFi}_Y = Z_Y |\text{Loc}_X ) \right) -  \sum_Y \log\left( P(\text{WiFi}_Y = Z_Y) \right)
