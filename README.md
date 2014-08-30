@@ -15,13 +15,11 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 
 # Future development
 
-Lots and lots to do! This was my first Android app every, which is why it sucks, and I've only spent ~9 hours on this project. Please contribute ideas/code or fork it and continue yourself!
-
 - ~~Use Python instead of Matlab to determine the fixed Posterior distributions and off load almost everything to the Raspberry Pi~~ **Made possible using simpler (and just as effective) prior calculation scheme**
 - ~~Make the Android app more friendly and not reliant on Tasker~~ **Thank you [jschools](https://github.com/jschools)**
 - Allow Android to collect data in the background
 - Ability to change URL in AndroidApp
-- Eventually make entire process self contained in an Android app
+- Eventually make entire process self contained in an Android app (Sqlite database, building priors, and posterior calculation)
 - Markov model for better location matching
 
 # Acknowledgements
