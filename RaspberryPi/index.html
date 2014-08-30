@@ -1,0 +1,76 @@
+<html>
+<title>WiFi IPS</title>
+<head>
+	<script src="../control/js/svg.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../control/js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script type='text/javascript' src='../control/js/svg.draggable.js'></script>
+	<script type='text/javascript' src="../control/js/svg.clock.js"></script>
+	<script type='text/javascript' src="../control/js/svg.import.js"></script>
+	<script type='text/javascript' src="../control/js/svg.filter.js"></script>
+	<script type='text/javascript' src="../control/js/svg.export.js"></script>
+	<script type='text/javascript' src="../control/js/svg.easing.js"></script>
+	<script type='text/javascript' src="../control/js/svg.shapes.js"></script>
+	<script type='text/javascript' src="../control/js/svg.topath.js"></script>
+
+	<script type='text/javascript'>//<![CDATA[ 
+window.onload=updateWindow;
+window.onresize=redrawSVG;
+$(document).ready(redrawSVG);
+
+// Websocket
+var sock = null;
+var wsuri = "ws://YOURIPADDRESS:9003/ws";
+var toWrite = "ji";
+var draw = null;
+var roomPosition = [600,500];
+function updateWindow(){
+
+sock = new WebSocket(wsuri);
+
+sock.onopen = function() {
+   console.log("connected to " + wsuri);
+}
+
+sock.onclose = function(e) {
+   console.log("connection closed (" + e.code + ")");
+}
+
+sock.onmessage = function(e) {
+	// every message should be the current state if prefaced by "web"
+   console.log("message received: " + e.data);
+	toWrite = e.data;
+	redrawSVG()
+}
+
+}
+
+function redrawSVG() {
+
+$("#drawing").html("");
+/* create an svg drawing */
+var draw = SVG('drawing')
+/* draw room */
+
+/* write text at the back */
+var title = draw.text(toWrite)
+    .back()
+    .move('0%', '40%')
+    .font({
+        family: 'Courier'
+      , size: 30
+      , anchor: 'left'
+    })
+
+/* create clock */
+draw.clock('15%').back().move('5%', '40%').start()
+}
+</script>
+
+</head>
+
+<body>
+<img src='http://rpiai.files.wordpress.com/2014/08/apartment_layout_wifi-01.png?w=343' style="float:left" width=300>
+<div id="drawing"></div>
+</body>
+
+</html>
