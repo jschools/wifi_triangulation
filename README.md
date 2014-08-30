@@ -28,7 +28,7 @@ Uses Android phone and Raspberry Pi for an adhoc Internal Positioning System wit
 
 # Acknowledgements
 
-Travis provided all the database code for Python and helped me get all of that started. [jschools](https://github.com/jschools) got the android app and php uploading working!
+Thanks to Travis provided all the database code for Python and helped me get all of that started. Thanks to [jschools](https://github.com/jschools) got the android app and php uploading working!
 
 
 # Background Information 
