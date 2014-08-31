@@ -56,7 +56,7 @@ data=pickle.load(open(base_directory+'W.p','rb'))
 Wdefault=pickle.loads(data)
 print "<i><small>Loaded data (%2.1f seconds)</small></i><br>" % (time() - start_time)
 start_time=time() 
-fifo=deque([0,0,0,0,0])
+fifo=deque([0,0,0,0,0,0,0,0,0,0,0])
 
 
 
