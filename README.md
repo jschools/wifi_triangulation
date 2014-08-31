@@ -81,15 +81,10 @@ I used small Gaussians to make up the final model which is why it looks smooth. 
  
 ### Simulations
 
-Here are some simulations from real data. This code essential picks a room and then picks random signals from that room and tests how often it is correct. In general, this method is accurate 75-90% of the time.  However this can be supplemented to further improve a little bit.
+Here are some simulations from real data. This code essential picks a room and then picks random signals from that room and tests how often it is correct. In general, this method is accurate **>95%** of the time.  There are some places it does better than others, but good overall:
 
-To improve further I introduced some metrics for minimum passing calls. The obvious metric is how low the maximum Bayesian probability can be, and another could be the ratio between the maximum Bayesian probability and the next highest. The plot of these two metrics is shown here:
+  ![Metrics](https://rpiai.files.wordpress.com/2014/08/fidelity.png?w=600)
 
-  ![Metrics](http://rpiai.files.wordpress.com/2014/08/two-metrics.png?w=300)
-
-As you can see there is a localization of "bad" points which can be cutoff with these metrics. For example, taking this data and setting the metrics to be ~1.2 (First/Second) and ~25% (minimum first result) you can greatly improve the correct calls/room as shown here for before/after at the cost of dropping about 37% of the polls:
-
-  ![Improvmenets](http://rpiai.files.wordpress.com/2014/08/metric-improvements.png?w=500)
 
 # Step-by-step guide to implementation
 
