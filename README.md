@@ -73,6 +73,12 @@ The WiFi information is gathered from my Android device - a Droid DNA phone. I w
 
 These distributions depend on the WiFi strength signals. I initialliy tried using Gaussian mixture models, but found a much simpler and effective way is to just estimate the probabilities by the number of events at a given RSSI divided by the total number of events. This costs more overhead, but its not much more and its insignificant as long as your not polling thousands of locations.
 
+Example of some distriubtions are here:
+
+  ![Distributions](https://rpiai.files.wordpress.com/2014/08/mac_comparisons1.png?w=800)
+  
+I used small Gaussians to make up the final model which is why it looks smooth. You can see here, even from an example with two locations ~10ft apart (Room 1 and Room 2) there is a substantial difference between the probabilities for a given room AND MAC address (blue and green). The prior for the distribution of the MAC address only (red) is essentially all possible probabilities.
+ 
 ### Simulations
 
 Here are some simulations from real data. This code essential picks a room and then picks random signals from that room and tests how often it is correct. In general, this method is accurate 75-90% of the time.  However this can be supplemented to further improve a little bit.
